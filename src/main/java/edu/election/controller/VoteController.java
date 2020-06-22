@@ -3,6 +3,7 @@ package edu.election.controller;
 import edu.election.controller.dto.Candidate;
 import edu.election.controller.dto.Citizen;
 import edu.election.controller.dto.Vote;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,13 +16,16 @@ import java.util.Optional;
 @RequestMapping("vote")
 public class VoteController {
     private List<Vote> votes;
+    @Autowired
+    private CitizenController citizenController;
+    @Autowired
+    private CandidateController candidateController;
 
     public VoteController() {
         votes = new ArrayList<>();
         Vote vote = new Vote();
         vote.setId(1);
 
-        CitizenController citizenController = new CitizenController();
         List<Citizen> citizens = new ArrayList<>();
         citizens = citizenController.getAllCitizen();
         Optional<Citizen> citizenToId =
@@ -32,7 +36,6 @@ public class VoteController {
             vote.setCitizen(citizenToId.get());
         }
 
-        CandidateController candidateController = new CandidateController();
         List<Candidate> candidates = new ArrayList<>();
         candidates = candidateController.getAllCandidate();
         Optional<Candidate> candidateToId =
@@ -68,7 +71,6 @@ public class VoteController {
     @PostMapping("/")
     public ResponseEntity addVote(@RequestBody Vote vote){
 
-        CitizenController citizenController = new CitizenController();
         List<Citizen> citizens = new ArrayList<>();
         citizens = citizenController.getAllCitizen();
         Optional<Citizen> citizenToId =
@@ -78,7 +80,7 @@ public class VoteController {
 
         if(citizenToId.isPresent()){
             vote.setCitizen(citizenToId.get());
-            CandidateController candidateController = new CandidateController();
+
             List<Candidate> candidates = new ArrayList<>();
             candidates = candidateController.getAllCandidate();
             Optional<Candidate> candidateToId =

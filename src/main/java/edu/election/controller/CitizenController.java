@@ -23,7 +23,7 @@ public class CitizenController {
         Citizen citizen = new Citizen();
         citizen.setId(1);
         citizen.setName("Cristian Camilo");
-        citizen.setSurname("Torres Duque");
+        citizen.setLastname("Torres Duque");
         citizen.setAge(21);
         citizen.setGender(Gender.MALE);
         citizen.setDocumentType(DocumentType.CITIZENSHIPCARD);
@@ -46,30 +46,27 @@ public class CitizenController {
     }
 
     @GetMapping("/")
-    public List<Citizen> getAllCitizen(){
+    public List<Citizen> getAllCitizen() {
         return citizens;
     }
 
-    @GetMapping("/votingplace/{id}")
-    public ResponseEntity getVotingPlaceById(@PathVariable int id){
-        Optional <Citizen> citizenToReturn =
+    @GetMapping("/votingPlace/{id}")
+    public VotingPlace getVotingPlaceById(@PathVariable int id) {
+        Citizen citizenToReturn =
                 citizens.stream()
                         .filter(citizen -> citizen.getId() == id)
-                        .findFirst();
-        if (citizenToReturn.isPresent()){
-            return new ResponseEntity(citizenToReturn.get().getVotingPlace(), HttpStatus.OK);
-        } else{
-            return new ResponseEntity(HttpStatus.NO_CONTENT);
-        }
+                        .findFirst()
+                        .orElseThrow(NoContentException::new);
+        return citizenToReturn.getVotingPlace();
     }
 
     @PostMapping("/")
-    public void addCitizen(@RequestBody Citizen citizen){
+    public void addCitizen(@RequestBody Citizen citizen) {
         citizens.add(citizen);
     }
 
     @PostMapping("/2/")
-    public ResponseEntity addCitizen2(@RequestBody Citizen citizen){
+    public ResponseEntity addCitizen2(@RequestBody Citizen citizen) {
         VotingPlace votingPlace = new VotingPlace();
         votingPlace.setId(citizen.getVotingPlace().getId());
 
@@ -82,7 +79,7 @@ public class CitizenController {
                 votingPlaces.stream()
                         .filter(votingPlace1 -> votingPlace1.getId() == votingPlace.getId())
                         .findFirst();
-        if(votingPlaceToId.isPresent()){
+        if (votingPlaceToId.isPresent()) {
 
             votingPlace.setName(votingPlaceToId.get().getName());
             votingPlace.setAddress(votingPlaceToId.get().getAddress());
@@ -92,34 +89,34 @@ public class CitizenController {
             citizen.setVotingPlace(votingPlace);
             citizens.add(citizen);
             return new ResponseEntity(HttpStatus.OK);
-        } else{
+        } else {
             return new ResponseEntity(HttpStatus.NO_CONTENT);
         }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity getCitizenById(@PathVariable int id){
-        Optional <Citizen> citizenToReturn =
+    public ResponseEntity getCitizenById(@PathVariable int id) {
+        Optional<Citizen> citizenToReturn =
                 citizens.stream()
                         .filter(citizen -> citizen.getId() == id)
                         .findFirst();
-        if (citizenToReturn.isPresent()){
+        if (citizenToReturn.isPresent()) {
             return new ResponseEntity(citizenToReturn.get(), HttpStatus.OK);
-        } else{
+        } else {
             return new ResponseEntity(HttpStatus.NO_CONTENT);
         }
     }
 
-    /*@GetMapping("/{documentNumber}")
+    @GetMapping("/{documentNumber}")
     public ResponseEntity getCitizenById(@PathVariable String documentNumber){
         Optional <Citizen> citizenToReturn =
                 citizens.stream()
-                .filter(citizen -> citizen.getDocumentNumber() == documentNumber)
+                .filter(citizen -> citizen.getDocumentNumber().equals(documentNumber))
                 .findFirst();
         if (citizenToReturn.isPresent()){
             return new ResponseEntity(citizenToReturn.get(), HttpStatus.OK);
         } else{
             return new ResponseEntity(HttpStatus.NO_CONTENT);
         }
-    }*/
+    }
 }

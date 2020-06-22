@@ -2,14 +2,14 @@ package edu.election.controller.dto;
 
 public class Citizen {
     private int id;
-    private String Name;
-    private String surname;
+    private String name;
+    private String lastname;
     private int age;
     private Gender gender;
     private DocumentType documentType;
     private String documentNumber;
     private VotingPlace votingPlace;
-    private String VotingTable;
+    private String votingTable;
 
     public int getId() {
         return id;
@@ -20,19 +20,19 @@ public class Citizen {
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String name) {
-        Name = name;
+        this.name = name;
     }
 
-    public String getSurname() {
-        return surname;
+    public String getLastname() {
+        return lastname;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
     public int getAge() {
@@ -76,10 +76,10 @@ public class Citizen {
     }
 
     public String getVotingTable() {
-        return VotingTable;
+        return votingTable;
     }
 
     public void setVotingTable(String votingTable) {
-        VotingTable = votingTable;
+        this.votingTable = votingTable;
     }
 }
