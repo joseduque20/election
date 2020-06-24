@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -21,7 +22,9 @@ public class VoteController {
     @Autowired
     private CandidateController candidateController;
 
-    public VoteController() {
+    @PostConstruct
+    private void methodInitial(){
+    //public VoteController() {
         votes = new ArrayList<>();
         Vote vote = new Vote();
         vote.setId(1);
